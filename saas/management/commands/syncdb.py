@@ -1,4 +1,3 @@
-import sys
 from django.core.management.commands import syncdb
 from saas.db.utils import PgSchemaHandler
 
