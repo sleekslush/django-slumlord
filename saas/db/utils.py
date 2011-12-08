@@ -22,7 +22,6 @@ class PgSchemaHandler(object):
         Creates a new schema with the provided name.
         """
         query = 'CREATE SCHEMA {}'.format(name)
-        print query
         self._execute_query(query)
 
     def set_search_path(self, name, include_public=True):
