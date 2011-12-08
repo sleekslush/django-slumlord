@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.db import DEFAULT_DB_ALIAS, connections, models
+from django.db import DEFAULT_DB_ALIAS, connections, models, transaction
 
 class PgSchemaHandler(object):
     default_search_path = ['"$user"', 'public']
@@ -47,4 +47,7 @@ class PgSchemaHandler(object):
         self._execute_query(query)
 
     def _execute_query(self, query):
-        self.connection.cursor().execute(query)
+        try:
+            self.connection.cursor().execute(query)
+        finally:
+            transaction.commit_unless_managed()
