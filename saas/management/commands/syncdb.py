@@ -1,4 +1,8 @@
-from django.core.management.commands import syncdb
+try:
+    from south.management.commands import syncdb
+except ImportError:
+    from django.core.management.commands import syncdb
+
 from saas.db.utils import PgSchemaHandler
 
 class Command(syncdb.Command):
