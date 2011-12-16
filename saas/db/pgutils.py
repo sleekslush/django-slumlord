@@ -16,7 +16,7 @@ def set_search_path(name, include_public=False, using=None):
     get_schema_handler(using).set_search_path(name, include_public)
 
 class PgSchemaHandler(object):
-    default_search_path = ['"$user"', 'public']
+    default_search_path = ['$user', 'public']
 
     def __init__(self, using=None):
         """
