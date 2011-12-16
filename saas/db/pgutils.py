@@ -45,8 +45,13 @@ class PgSchemaHandler(object):
         If include_public is True, we also search the public schema. Otherwise,
         only the schema specified is searched.
         """
-        search_path = list(path) + (['public'] if include_public else [])
-        self._set_schema_search_path(search_path)
+        if isinstace(path, basestring):
+            path = [path]
+
+        if include_public:
+            path = ['public'].extend(path)
+
+        self._set_schema_search_path(path)
 
     def reset_search_path(self):
         """
