@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.db import DEFAULT_DB_ALIAS, connections, models, transaction
+from django.db import DEFAULT_DB_ALIAS, connections, transaction
 
 _schema_handler_cache = {}
 
