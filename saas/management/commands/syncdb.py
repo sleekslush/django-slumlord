@@ -3,7 +3,7 @@ try:
 except ImportError:
     from django.core.management.commands import syncdb
 
-from saas.db.utils import PgSchemaHandler
+from saas.db import pgutils
 
 class Command(syncdb.Command):
     option_list = syncdb.Command.option_list
@@ -15,5 +15,4 @@ class Command(syncdb.Command):
         super(Command, self).handle_noargs(**options)
 
     def _set_schema(self, app_name, using):
-        pg_schema_handler = PgSchemaHandler(using)
-        pg_schema_handler.set_search_path(app_name, False)
+        pgutils.set_search_path(app_name, using)

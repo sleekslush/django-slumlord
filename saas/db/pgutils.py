@@ -1,6 +1,20 @@
 from django.conf import settings
 from django.db import DEFAULT_DB_ALIAS, connections, models, transaction
 
+_schema_handler_cache = {}
+
+def get_schema_handler(using=None):
+    if using not in _schema_handler_cache:
+        _schema_handler_cache[using] = PgSchemaHandler(using)
+
+    return _schema_handler_cache[using]
+
+def create_schema(schema, using=None):
+    get_schema_handler(using).create_schema(schema)
+
+def set_search_path(name, include_public=False, using=None):
+    get_schema_handler(using).set_search_path(name, include_public)
+
 class PgSchemaHandler(object):
     default_search_path = ['"$user"', 'public']
 
@@ -21,10 +35,9 @@ class PgSchemaHandler(object):
         """
         Creates a new schema with the provided name.
         """
-        query = 'CREATE SCHEMA {}'.format(name)
-        self._execute_query(query)
+        self._execute_query('CREATE SCHEMA %s', [name])
 
-    def set_search_path(self, name, include_public=True):
+    def set_search_path(self, path, include_public=False):
         """
         Sets the search path to the schema specified in order to support queries
         in each Tenant's isolated namespace.
@@ -32,7 +45,7 @@ class PgSchemaHandler(object):
         If include_public is True, we also search the public schema. Otherwise,
         only the schema specified is searched.
         """
-        search_path = [name] + (['public'] if include_public else [])
+        search_path = list(path) + (['public'] if include_public else [])
         self._set_schema_search_path(search_path)
 
     def reset_search_path(self):
@@ -42,11 +55,12 @@ class PgSchemaHandler(object):
         self._set_schema_search_path(self.default_search_path)
 
     def _set_schema_search_path(self, path):
-        query = 'SET search_path TO {}'.format(','.join(path))
-        self._execute_query(query)
+        format_placeholders = ','.join(['%s'] * len(path))
+        query = 'SET search_path TO {}'.format(format_placeholders)
+        self._execute_query(query, path)
 
-    def _execute_query(self, query):
+    def _execute_query(self, query, params=None):
         try:
-            self.connection.cursor().execute(query)
+            self.connection.cursor().execute(query, params)
         finally:
             transaction.commit_unless_managed()
