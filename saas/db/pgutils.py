@@ -35,7 +35,7 @@ class PgSchemaHandler(object):
         """
         Creates a new schema with the provided name.
         """
-        self._execute_query('CREATE SCHEMA %s', [name])
+        self._execute_query('CREATE SCHEMA {}'.format(name))
 
     def set_search_path(self, path, include_public=False):
         """
@@ -45,7 +45,7 @@ class PgSchemaHandler(object):
         If include_public is True, we also search the public schema. Otherwise,
         only the schema specified is searched.
         """
-        if isinstace(path, basestring):
+        if isinstance(path, basestring):
             path = [path]
 
         if include_public:
