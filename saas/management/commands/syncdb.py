@@ -15,4 +15,4 @@ class Command(syncdb.Command):
         super(Command, self).handle_noargs(**options)
 
     def _set_schema(self, app_name, using):
-        pgutils.set_search_path(app_name, using)
+        pgutils.set_search_path(app_name, using=using)
