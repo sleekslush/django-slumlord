@@ -1,4 +1,4 @@
-from saas.models import Tenant
+from slumlord.models import Tenant
 
 class TenantMiddleware(object):
     def process_request(self, request):

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from saas.managers import TenantManager
+from slumlord.managers import TenantManager
 
 class Tenant(models.Model):
     """

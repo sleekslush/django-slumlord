@@ -3,7 +3,7 @@ try:
 except ImportError:
     from django.core.management.commands import syncdb
 
-from saas.db import pgutils
+from slumlord.db import pgutils
 
 class Command(syncdb.Command):
     option_list = syncdb.Command.option_list
