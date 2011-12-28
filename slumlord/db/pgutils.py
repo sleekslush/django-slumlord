@@ -49,7 +49,7 @@ class PgSchemaHandler(object):
             path = [path]
 
         if include_public:
-            path = ['public'].extend(path)
+            path = list(path) + ['public']
 
         self._set_schema_search_path(path)
 
