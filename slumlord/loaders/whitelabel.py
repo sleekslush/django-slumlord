@@ -15,7 +15,7 @@ class Loader(filesystem.Loader):
         Creates a specific loader path based on tenant id for whitelabeling
         """
         request = local_thread.current_request()
-        whitelabel_dirs = settings.WHITELABEL_DIRS
+        whitelabel_dirs = getattr(settings, 'WHITELABEL_DIRS', []) 
 
         if request:
             for whitelabel_dir in whitelabel_dirs:
