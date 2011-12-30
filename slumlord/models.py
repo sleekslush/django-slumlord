@@ -16,3 +16,7 @@ class Tenant(models.Model):
 
     def __unicode__(self):
         return self.custom_domain or self.subdomain
+
+    @property
+    def slug(self):
+        return "app_{}".format(self.pk)
