@@ -10,7 +10,7 @@ class Tenant(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     activated_at = models.DateTimeField(null=True)
     subdomain = models.SlugField(unique=True)
-    custom_domain = models.URLField(unique=True, blank=True)
+    custom_domain = models.URLField(unique=True, null=True, blank=True)
 
     objects = TenantManager()
 
