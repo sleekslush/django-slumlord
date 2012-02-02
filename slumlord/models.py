@@ -15,7 +15,7 @@ class Tenant(models.Model):
     objects = TenantManager()
 
     def __unicode__(self):
-        return self.custom_domain or '{}.driftly.com'.format(self.subdomain)
+        return self.custom_domain or self.subdomain
 
     @property
     def slug(self):
