@@ -1,19 +1,11 @@
 from django.conf import settings
 from django.db import DEFAULT_DB_ALIAS, connections, transaction
 
-_schema_handler_cache = {}
-
-def get_schema_handler(using=None):
-    if using not in _schema_handler_cache:
-        _schema_handler_cache[using] = PgSchemaHandler(using)
-
-    return _schema_handler_cache[using]
-
 def create_schema(schema, using=None):
-    get_schema_handler(using).create_schema(schema)
+    PgSchemaHandler(using).create_schema(schema)
 
 def set_search_path(path, include_public=False, using=None):
-    get_schema_handler(using).set_search_path(path, include_public)
+    PgSchemaHandler(using).set_search_path(path, include_public)
 
 class PgSchemaHandler(object):
     default_search_path = ['$user', 'public']
